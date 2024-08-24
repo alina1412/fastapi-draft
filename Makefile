@@ -13,6 +13,8 @@ endif
 
 up:
 	$(docker_up) 
+
+alembic:
 	$(alembic_up)
 
 down:
