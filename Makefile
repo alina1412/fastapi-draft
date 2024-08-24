@@ -49,9 +49,11 @@ async-alembic-down:
 	poetry run alembic -c alembic_as.ini downgrade -1
 
 lint:
-	poetry run isort service tests
-	poetry run black service tests
+	poetry run black service
 	poetry run pylint service
+
+isort:
+	poetry run isort service tests
 
 req:
 	poetry export -f requirements.txt --without-hashes --with dev --output ./service/requirements.txt
