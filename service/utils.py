@@ -21,7 +21,10 @@ async def put_some_data(session, data):
     )
 
     result = await session.execute(q)
-    return result.returned_defaults[0]  # id
+    if result.rowcount:
+        return result.returned_defaults[0]  # id
+    else:
+        return None
 
 
 async def update_some_data(session, data):
@@ -35,9 +38,10 @@ async def update_some_data(session, data):
             ),
         )
         .values(**{User.active.key: User.active or data["active"]})
+        .returning(User.id)
     )
-    result = await session.execute(stmt)
-    return
+    result = list(await session.execute(stmt))
+    return result
 
 
 async def delete_some_data(session, data):

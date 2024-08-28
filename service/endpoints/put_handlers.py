@@ -1,5 +1,5 @@
 import random
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, HTTPException, status
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -32,6 +32,11 @@ async def put_data2(add_data=None, session: AsyncSession = Depends(get_session))
     id_ = await put_some_data(session, {"name": add_data, "password": "bbb"})
     users = await get_some_data(session)
     print(users)
-    await update_some_data(session, {"id": 1, "active": 0})
-    await delete_some_data(session, {"id": 2})
+    res = await update_some_data(session, {"id": 100, "active": 0})
+    id_ = res[0][0] if res and res[0] else None
+    try:
+        await delete_some_data(session, {"id": 2})
+    except Exception as exc:
+        print(exc)
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, f"No") from exc
     return {"user_id": id_}
