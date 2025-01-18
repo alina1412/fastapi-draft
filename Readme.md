@@ -1,26 +1,32 @@
 empty draft for FastApi
 
-creating virtual environment, .env
-poetry install
+### setup
+- creating virtual environment, .env
+- `poetry install`
 
-running using poetry and make:
--make run
--http://localhost:8000/docs
+- running using poetry and make: `make run`
+- http://localhost:8000/docs/
+- creating postgres from docker-compose: `make up`
 
-creating postgres from docker-compose:
--make up
-
+### notes
 enter docker container (why?):
--docker exec -it 47dece677d93  bash
+`docker exec -it 47dece677d93  bash`
 
 in host console:
--psql -h 127.0.0.1 -p 5433 -U user postgres
+`psql -h 127.0.0.1 -p 5433 -U user postgres`
 
-alembic:
--alembic init -t async migration
+
+### alembic:
+
+`alembic init -t async migration`
+
+
 -edit files configs:
---sqlalchemy.url = postgresql+asyncpg://%(DB_USERNAME)s:%(DB_PASSWORD)s@%(DB_HOST)s:%(DB_PORT)s/%(DB_NAME)s
+
+`sqlalchemy.url = postgresql+asyncpg://%(DB_USERNAME)s:%(DB_PASSWORD)s@%(DB_HOST)s:%(DB_PORT)s/%(DB_NAME)s`
+
 --
+```
 from starlette.config import Config
 
 settingenv = Config(".env")
@@ -41,6 +47,8 @@ config.set_section_option(section, "DB_NAME", DB_NAME)
 
 from service.db_setup.models import User, Base
 target_metadata = Base.metadata
+```
 
 
--alembic revision --autogenerate -m 'initial'
+
+`alembic revision --autogenerate -m 'initial'`
