@@ -1,6 +1,9 @@
-from sqlalchemy import create_engine, Column, Integer, String, Text, ForeignKey
-from sqlalchemy.orm import declarative_base
-
+from sqlalchemy import Integer, String
+from sqlalchemy.orm import (
+    Mapped,
+    declarative_base,
+    mapped_column,
+)
 
 Base = declarative_base()
 
@@ -8,7 +11,11 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True)
-    username = Column(String(255), unique=True, nullable=False)
-    password = Column(String(255), nullable=False)
-    active = Column(Integer, nullable=False, default=1)
+    id: Mapped[int] = mapped_column(init=False, primary_key=True)
+    username: Mapped[str] = mapped_column(
+        String(255), unique=True, nullable=False
+    )
+    password: Mapped[str] = mapped_column(String(255), nullable=False)
+    active: Mapped[int] = mapped_column(
+        Integer, nullable=False, server_default="1"
+    )

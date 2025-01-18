@@ -3,8 +3,8 @@ from os import environ
 from dotenv import load_dotenv
 
 load_dotenv()
-key = environ.get("key")
-assert key
+KEY = environ.get("KEY")
+assert KEY
 
 db_settings = {
     "db_name": environ.get("DB_NAME"),
