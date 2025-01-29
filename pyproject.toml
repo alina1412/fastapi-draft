@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "template"
 authors = ["alina1412 <alina1412@mail.ru>"]
 readme = "README.md"
-packages = [{include = "fastapi_draft"}]
+packages = []
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -40,6 +40,20 @@ typing-extensions = "4.12.2"
 uvicorn = "0.34.0"
 
 
+[tool.poetry.group.dev.dependencies]
+black = "^25.1.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 79
+
+[tool.isort]
+line_length = 79
+known_local_folder = []
+
+[tool.mypy]
+disallow_untyped_defs = true
+ignore_missing_imports = true

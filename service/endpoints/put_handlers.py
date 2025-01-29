@@ -25,7 +25,9 @@ api_router = APIRouter(
         status.HTTP_422_UNPROCESSABLE_ENTITY: {"description": "Bad request"},
     },
 )
-async def put_data2(add_data=None, session: AsyncSession = Depends(get_session)):
+async def put_data2(
+    add_data=None, session: AsyncSession = Depends(get_session)
+):
     """example with postgres sqlalchemy"""
     add_data = add_data if add_data else str(random.random())
     print(add_data)

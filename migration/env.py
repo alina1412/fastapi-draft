@@ -11,20 +11,20 @@ from alembic import context
 from starlette.config import Config
 
 settingenv = Config(".env")
-DB_NAME: str = settingenv("DB_NAME", cast=str)
-DB_HOST: str = settingenv("DB_HOST", default="localhost", cast=str)
-DB_USERNAME: str = settingenv("DB_USERNAME", cast=str)
-DB_PORT: int = settingenv("DB_PORT", cast=str)
-DB_PASSWORD: str = settingenv("DB_PASSWORD", cast=str)
-
+db_setup_from_env = {
+    "DB_NAME": settingenv("DB_NAME", cast=str),
+    "DB_HOST": settingenv("DB_HOST", default="localhost", cast=str),
+    "DB_USERNAME": settingenv("DB_USERNAME", cast=str),
+    "DB_PORT": settingenv("DB_PORT", cast=str),
+    "DB_PASSWORD": settingenv("DB_PASSWORD", cast=str),
+    "DB_DRIVER": settingenv("DB_DRIVER", cast=str)
+}
 config = context.config
 section = config.config_ini_section
 
-config.set_section_option(section, "DB_USERNAME", DB_USERNAME)
-config.set_section_option(section, "DB_PASSWORD", DB_PASSWORD)
-config.set_section_option(section, "DB_HOST", DB_HOST)
-config.set_section_option(section, "DB_PORT", DB_PORT)
-config.set_section_option(section, "DB_NAME", DB_NAME)
+for db_set_key, db_set_val in db_setup_from_env.items():
+    config.set_section_option(section, db_set_key, db_set_val)
+
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
