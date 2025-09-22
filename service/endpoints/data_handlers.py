@@ -16,7 +16,7 @@ api_router = APIRouter(
         status.HTTP_422_UNPROCESSABLE_ENTITY: {"description": "Bad request"},
     },
 )
-def show_data(
+async def show_data(
     # user_input: User = Depends(),
     # user_token_data=Depends(get_user_by_token)
 ):

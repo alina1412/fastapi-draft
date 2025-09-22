@@ -14,6 +14,6 @@ api_router = APIRouter(
         status.HTTP_422_UNPROCESSABLE_ENTITY: {"description": "Bad request"},
     },
 )
-def post_data():
+async def post_data():
     """"""
     return {"data": "user_token_data"}

@@ -13,6 +13,8 @@ endif
 
 up:
 	$(docker_up) 
+
+alembic:
 	$(alembic_up)
 
 down:
@@ -32,24 +34,24 @@ renew-async:
 	poetry run alembic -c alembic_as.ini downgrade -1
 	poetry run alembic -c alembic_as.ini upgrade head
 
-test:
-	make renew-async
-	poetry run pytest -m my --verbosity=2 --showlocals
+test-all:
+	poetry run pytest -vsx --verbosity=2
 
-async-alembic-init:
-	poetry run alembic init -t async async_migrations
-	poetry run alembic -c alembic_as.ini revision --autogenerate -m "async_initial"
+alembic-gen:
+	poetry run alembic -c alembic.ini revision --autogenerate -m "initial"
 
-async-alembic-up:
-	poetry run alembic -c alembic_as.ini upgrade head
+alembic-up:
+	poetry run alembic -c alembic.ini upgrade head
 
-async-alembic-down:
-	poetry run alembic -c alembic_as.ini downgrade -1
+alembic-down:
+	poetry run alembic -c alembic.ini downgrade -1
 
 lint:
-	poetry run isort service tests
-	poetry run black service tests
+	poetry run black service
 	poetry run pylint service
+
+isort:
+	poetry run isort service tests
 
 req:
 	poetry export -f requirements.txt --without-hashes --with dev --output ./service/requirements.txt
