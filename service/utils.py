@@ -1,6 +1,5 @@
-from sqlalchemy import select, update, or_, delete
+from sqlalchemy import delete, or_, select, update
 from sqlalchemy.dialects.postgresql import insert
-
 
 from service.db_setup.models import User
 
@@ -23,8 +22,7 @@ async def put_some_data(session, data):
     result = await session.execute(q)
     if result.rowcount:
         return result.returned_defaults[0]  # id
-    else:
-        return None
+    return None
 
 
 async def update_some_data(session, data):

@@ -1,6 +1,6 @@
 import random
-from fastapi import APIRouter, Depends, HTTPException, status
 
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from service.db_setup.db_settings import get_session
@@ -10,7 +10,6 @@ from service.utils import (
     put_some_data,
     update_some_data,
 )
-
 
 api_router = APIRouter(
     prefix="/v1",
@@ -40,5 +39,7 @@ async def put_data2(
         await delete_some_data(session, {"id": 2})
     except Exception as exc:
         print(exc)
-        raise HTTPException(status.HTTP_400_BAD_REQUEST, f"No") from exc
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST, "BAD_REQUEST"
+        ) from exc
     return {"user_id": id_}

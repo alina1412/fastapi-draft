@@ -17,7 +17,7 @@ db_setup_from_env = {
     "DB_USERNAME": settingenv("DB_USERNAME", cast=str),
     "DB_PORT": settingenv("DB_PORT", cast=str),
     "DB_PASSWORD": settingenv("DB_PASSWORD", cast=str),
-    "DB_DRIVER": settingenv("DB_DRIVER", cast=str)
+    "DB_DRIVER": settingenv("DB_DRIVER", cast=str),
 }
 config = context.config
 section = config.config_ini_section
@@ -36,6 +36,7 @@ if config.config_file_name is not None:
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 from service.db_setup.models import User, Base
+
 target_metadata = Base.metadata
 
 

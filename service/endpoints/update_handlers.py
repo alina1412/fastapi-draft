@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends, status
 
-
 api_router = APIRouter(
     prefix="/v1",
     tags=["private"],
@@ -15,5 +14,5 @@ api_router = APIRouter(
     },
 )
 async def post_data():
-    """"""
+    """Example"""
     return {"data": "user_token_data"}

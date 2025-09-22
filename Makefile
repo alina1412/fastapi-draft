@@ -1,7 +1,6 @@
 run:
 	poetry run python -m service
-	
-alembic_up = make async-alembic-up
+
 
 ifdef OS
 	docker_up = docker compose up -d
@@ -20,19 +19,13 @@ alembic:
 down:
 	$(docker_down)
 
-
-
-renew-sync:
-	poetry run alembic -c alembic_s.ini downgrade -1
-	poetry run alembic -c alembic_s.ini upgrade head
-
-test-sync:
-	make renew-sync
+test-empty:
+	make renew
 	poetry run pytest -m my --verbosity=2 --showlocals --cov=service --cov-report html
 
-renew-async:
-	poetry run alembic -c alembic_as.ini downgrade -1
-	poetry run alembic -c alembic_as.ini upgrade head
+renew:
+	poetry run alembic -c alembic.ini downgrade -1
+	poetry run alembic -c alembic.ini upgrade head
 
 test-all:
 	poetry run pytest -vsx --verbosity=2
@@ -49,6 +42,8 @@ alembic-down:
 lint:
 	poetry run black service
 	poetry run pylint service
+	poetry run black tests
+	poetry run pylint tests
 
 isort:
 	poetry run isort service tests
