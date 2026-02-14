@@ -13,6 +13,7 @@ from service.config import db_settings, logger
 class DbConnector:
     def __init__(self) -> None:
         self.engine: AsyncEngine | None = None
+        self._session_maker: async_sessionmaker | None = None
 
     @property
     def uri(self) -> str:
@@ -25,39 +26,48 @@ class DbConnector:
         )
 
     def get_engine(self) -> AsyncEngine:
-        self.engine = create_async_engine(
-            self.uri,
-            pool_size=1,
-            max_overflow=0,
-            pool_recycle=280,
-            pool_timeout=20,
-            echo=True,
-            future=True,
-        )
+        if self.engine is None:
+            self.engine = create_async_engine(
+                self.uri,
+                pool_size=5,
+                max_overflow=10,
+                pool_pre_ping=True,
+                pool_recycle=280,
+                pool_timeout=20,
+                echo=True,
+                future=True,
+            )
         return self.engine
 
     @property
     def session_maker(self) -> async_sessionmaker:
-        if not self.engine:
-            self.get_engine()
-        return async_sessionmaker(
-            self.engine,
-            class_=AsyncSession,
-            expire_on_commit=False,
-        )
+        if self._session_maker is None:
+            self._session_maker = async_sessionmaker(
+                self.get_engine(),
+                class_=AsyncSession,
+                expire_on_commit=False,
+            )
+        return self._session_maker
+
+    async def dispose_engine(self):
+        """Dispose engine when application shuts down"""
+        if self.engine:
+            await self.engine.dispose()
+            self.engine = None
+            self._session_maker = None
+
+
+db_connector = DbConnector()
 
 
 async def get_session() -> AsyncGenerator:
-    db_connector = DbConnector()
-    async with db_connector.session_maker() as session:
-        try:
-            yield session
-        except Exception as exc:
-            logger.error("Error : ", exc_info=exc)
-            await session.rollback()
-            raise exc
-        finally:
-            await session.close()
-            logger.info("closing db session")
-            if db_connector.engine:
-                await db_connector.engine.dispose()
+    session = db_connector.session_maker()
+    try:
+        yield session
+        await session.commit()
+    except Exception as exc:
+        logger.error("Error in session", exc_info=exc)
+        await session.rollback()
+        raise exc
+    finally:
+        await session.close()

@@ -1,11 +1,24 @@
+from contextlib import asynccontextmanager
+
 import uvicorn
 from fastapi import FastAPI
 
+from service.config import logger
+from service.db_setup.db_settings import db_connector
 from service.endpoints.data_handlers import api_router as data_routes
 from service.endpoints.put_handlers import api_router as put_routes
 from service.endpoints.update_handlers import api_router as upd_routes
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    logger.info("Starting up...")
+    yield
+    logger.warning("Shutting down...")
+    await db_connector.dispose_engine()
+
+
+app = FastAPI(lifespan=lifespan)
 
 app.include_router(put_routes)
 app.include_router(upd_routes)
