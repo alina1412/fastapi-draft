@@ -1,14 +1,26 @@
-empty draft for FastApi
+### empty draft for FastApi project
+
+### Stack
+Fastapi, 
+postgres,
+Sqlalchemy,
+Alembic,
+Docker,
+poetry,
+pytest
+python (3.10 - 3.13)
 
 ### setup
-- creating virtual environment, .env
-- `poetry install`
+- create virtual environment, .env, check DB_PORT for local postgres or postgres in docker
+- `poetry install --no-root`
 
 - running using poetry and make: `make run`
 - http://localhost:8000/docs/
-- creating postgres from docker-compose: `make up`
+- creating postgres db from docker-compose: `make up`
 
 ### notes
+
+
 enter docker container (why?):
 `docker exec -it 47dece677d93  bash`
 
