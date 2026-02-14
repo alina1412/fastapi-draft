@@ -1,11 +1,24 @@
 import logging
 
+from service.db_setup.models import User
+
 pytest_plugins = ("pytest_asyncio",)
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 
 async def test_show_data_handler(client):
-    url = "v1/data1"
-    response = client.get(url)
+    url = "/data1"
+    response = await client.get(url)
     assert response.status_code == 200
+
+async def test_get_items(client, session):
+    session.add(User(username="test", password='123', active=1))
+    await session.commit()
+
+    response = await client.get("/items")
+    assert response.status_code == 200
+    assert response.json()[0]["username"] == "test"
+
+    await session.close()
+

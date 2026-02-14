@@ -1,7 +1,11 @@
+import sqlalchemy as sa
 from fastapi import APIRouter, Depends, status
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from service.db_setup.db_settings import get_session
+from service.db_setup.models import User
 
 api_router = APIRouter(
-    prefix="/v1",
     tags=["private"],
 )
 
@@ -19,3 +23,10 @@ async def show_data(
 ):
     """Page"""
     return {"data": "Success"}
+
+
+@api_router.get("/items")
+async def get_items(session: AsyncSession = Depends(get_session)):
+    result = await session.execute(sa.select(User))
+    items = result.scalars().all()
+    return items
