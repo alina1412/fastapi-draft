@@ -14,10 +14,26 @@ services:
       test: ["CMD-SHELL", "sh -c 'pg_isready -U ${DB_USERNAME} -d ${DB_NAME}'"]
       interval: 10s
       timeout: 5s
-    # volumes:
-    #   - ./.database_data:/var/lib/postgresql/data
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
 
-# volumes:
-#   .database_data:
-#     driver: local
+  app:
+    container_name: app_
+    build: ./service
+    env_file: .env
+    environment:
+      - DB_HOST=db
+      - DB_NAME=${DB_NAME}
+      - DB_USERNAME=${DB_USERNAME}
+      - POSTGRES_PORT=5432
+      - DB_PASSWORD=${DB_PASSWORD}
+      - APP_PORT=${APP_PORT}
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
+    driver: local
