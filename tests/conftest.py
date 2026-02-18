@@ -15,6 +15,8 @@ from service.__main__ import app
 from service.db_setup.db_settings import get_session
 from service.db_setup.models import Base
 
+from .fixtures import *
+
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 

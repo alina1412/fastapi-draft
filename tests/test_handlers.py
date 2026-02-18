@@ -13,12 +13,7 @@ async def test_show_data_handler(client):
     assert response.status_code == 200
 
 
-async def test_get_items(client, session):
-    session.add(UserModel(username="test", password="123", active=1))
-    await session.commit()
-
+async def test_get_items(client, user_correct):
     response = await client.get("/items")
     assert response.status_code == 200
     assert response.json()[0]["username"] == "test"
-
-    await session.close()

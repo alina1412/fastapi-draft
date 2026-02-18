@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from service.config import logger
 from service.db_setup.models import UserModel
+from service.user_schema import User
 
 
 class DbAccessor:
@@ -11,9 +12,9 @@ class DbAccessor:
 
 
 class UserAccessor(DbAccessor):
-    async def create_user(self, vals: dict) -> int | None:
+    async def create_user(self, user: User) -> int | None:
         try:
-            user = UserModel(**vals)
+            user = UserModel.from_domain(user)
             self.session.add(user)
             await self.session.flush()
             await self.session.commit()
