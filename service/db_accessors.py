@@ -2,7 +2,7 @@ import sqlalchemy as sa
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from service.config import logger
-from service.db_setup.models import User
+from service.db_setup.models import UserModel
 
 
 class DbAccessor:
@@ -13,7 +13,7 @@ class DbAccessor:
 class UserAccessor(DbAccessor):
     async def create_user(self, vals: dict) -> int | None:
         try:
-            user = User(**vals)
+            user = UserModel(**vals)
             self.session.add(user)
             await self.session.flush()
             await self.session.commit()
@@ -25,8 +25,8 @@ class UserAccessor(DbAccessor):
         logger.info("added user %s", user.id)
         return user.id
 
-    async def get_user_by_id(self, id_: int) -> User | None:
-        return await self.session.get(User, id_)
+    async def get_user_by_id(self, id_: int) -> UserModel | None:
+        return await self.session.get(UserModel, id_)
 
     def filter_edited_vals(self, edited_vals: dict) -> dict:
         PASWD_MIN_LEN = 3
@@ -42,11 +42,11 @@ class UserAccessor(DbAccessor):
 
     async def patch_user_by_id(
         self, id_: int, edited_vals: dict
-    ) -> User | None:
+    ) -> UserModel | None:
         new_vals = self.filter_edited_vals(edited_vals)
         if not new_vals:
             return None
-        query_result = await self.session.get(User, id_)
+        query_result = await self.session.get(UserModel, id_)
         if not query_result:
             return None
         try:
@@ -61,7 +61,7 @@ class UserAccessor(DbAccessor):
         return query_result
 
     async def delete_user(self, id_: int) -> bool:
-        query = sa.delete(User).where(User.id == id_)
+        query = sa.delete(UserModel).where(UserModel.id == id_)
         result = await self.session.execute(query)
         await self.session.commit()
         return bool(result.rowcount)

@@ -1,6 +1,6 @@
 import logging
 
-from service.db_setup.models import User
+from service.db_setup.models import UserModel
 
 pytest_plugins = ("pytest_asyncio",)
 logging.basicConfig(level=logging.DEBUG)
@@ -14,7 +14,7 @@ async def test_show_data_handler(client):
 
 
 async def test_get_items(client, session):
-    session.add(User(username="test", password="123", active=1))
+    session.add(UserModel(username="test", password="123", active=1))
     await session.commit()
 
     response = await client.get("/items")
