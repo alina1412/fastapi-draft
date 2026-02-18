@@ -11,7 +11,6 @@ class DbAccessor:
 
 
 class UserAccessor(DbAccessor):
-
     async def create_user(self, vals: dict) -> int | None:
         try:
             user = User(**vals)

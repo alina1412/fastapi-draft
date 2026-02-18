@@ -8,6 +8,7 @@ from service.db_setup.db_settings import db_connector
 from service.endpoints.data_handlers import api_router as data_routes
 from service.endpoints.put_handlers import api_router as put_routes
 from service.endpoints.update_handlers import api_router as upd_routes
+from service.http_exceptions import add_exception_handlers
 
 
 @asynccontextmanager
@@ -19,6 +20,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+app = add_exception_handlers(app)
 
 app.include_router(put_routes)
 app.include_router(upd_routes)

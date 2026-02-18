@@ -12,8 +12,9 @@ async def test_show_data_handler(client):
     response = await client.get(url)
     assert response.status_code == 200
 
+
 async def test_get_items(client, session):
-    session.add(User(username="test", password='123', active=1))
+    session.add(User(username="test", password="123", active=1))
     await session.commit()
 
     response = await client.get("/items")
@@ -21,4 +22,3 @@ async def test_get_items(client, session):
     assert response.json()[0]["username"] == "test"
 
     await session.close()
-

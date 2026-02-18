@@ -4,8 +4,12 @@ from typing import AsyncGenerator
 
 import pytest
 from httpx import ASGITransport, AsyncClient
-from sqlalchemy.ext.asyncio import (AsyncEngine, AsyncSession,
-                                    async_sessionmaker, create_async_engine)
+from sqlalchemy.ext.asyncio import (
+    AsyncEngine,
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
+)
 
 from service.__main__ import app
 from service.db_setup.db_settings import get_session
@@ -14,10 +18,10 @@ from service.db_setup.models import Base
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 
-
-
-TEST_DB_URL = environ.get("TEST_DB_URL", 
-                          "postgresql+asyncpg://postgres:postgres@localhost:5432/test_db")
+TEST_DB_URL = environ.get(
+    "TEST_DB_URL",
+    "postgresql+asyncpg://postgres:postgres@localhost:5432/test_db",
+)
 
 
 @pytest.fixture(scope="function")
