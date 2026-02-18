@@ -46,6 +46,7 @@ black = "^25.1.0"
 pytest-asyncio = "1.3.0"
 pytest = "^9.0.2"
 httpx = "^0.28.1"
+ruff="0.14.14"
 
 [tool.poetry.requires-plugins]
 poetry-plugin-export = ">=1.8"
@@ -64,3 +65,21 @@ known_local_folder = []
 [tool.mypy]
 disallow_untyped_defs = true
 ignore_missing_imports = true
+
+[tool.ruff]
+line-length = 79
+indent-width = 4
+exclude = [
+    "alembic",
+    "migration",
+    "migrations"
+]
+
+
+[tool.ruff.lint]
+# Extend the default rule selection to include import sorting (I rules)
+extend-select = ["I"]
+fixable = ["I"]
+
+[tool.ruff.lint.pycodestyle]
+max-doc-length = 79
