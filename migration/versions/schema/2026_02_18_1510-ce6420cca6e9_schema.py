@@ -1,11 +1,10 @@
-"""initial
+"""schema
 
-Revision ID: 807e835edae0
-Revises:
-Create Date: 2025-09-22 09:02:15.530689
+Revision ID: ce6420cca6e9
+Revises: 
+Create Date: 2026-02-18 15:10:03.182157
 
 """
-
 from typing import Sequence, Union
 
 from alembic import op
@@ -13,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = "807e835edae0"
+revision: str = 'schema'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -36,4 +35,5 @@ def upgrade() -> None:
 def downgrade() -> None:
     op.drop_constraint(op.f("username"), "user", type_="unique")
     op.drop_table("user")
+   
     # ### end Alembic commands ###

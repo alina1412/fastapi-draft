@@ -31,13 +31,19 @@ test-all:
 	poetry run pytest -vsx --verbosity=2
 
 alembic-gen:
-	poetry run alembic -c alembic.ini revision --autogenerate -m "initial"
+	alembic revision -m "edit" --head schema@head
+
+alembic-gen0:
+	alembic revision --autogenerate -m "edit" --version-path=./migration/versions/schema
 
 alembic-up:
-	poetry run alembic -c alembic.ini upgrade head
+	alembic -c alembic.ini upgrade schema@head 
+
+alembic-data:
+	alembic -c alembic.ini upgrade data@head
 
 alembic-down:
-	poetry run alembic -c alembic.ini downgrade -1
+	alembic -c alembic.ini downgrade -1
 
 lint:
 	poetry run black service
