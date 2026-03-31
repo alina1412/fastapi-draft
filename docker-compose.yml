@@ -19,7 +19,7 @@ services:
 
 
   app:
-    container_name: app_
+    container_name: ${DOCKER_APP_NAME}
     build: ./service
     env_file: .env
     environment:

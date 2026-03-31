@@ -1,12 +1,13 @@
 .venv/
+venv/
 my_*
 __pycache__/
 *.env
-.vscode
+.vscode/*
 .pytest_cache
-.database_data/*
-migrations/*
+
 htmlcov/*
 .coverage
 example_*
 *.log
+postgres_data/*
